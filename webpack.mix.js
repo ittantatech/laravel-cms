@@ -43,5 +43,7 @@ mix.scripts([
     'public/global/js/demo_pages/datatables_advanced.js',
     'public/global/js/plugins/uploaders/dropzone.min.js',
     'public/global/js/plugins/forms/wizards/steps.min.js',
-    'public/global/js/plugins/forms/validation/validate.min.js'
+    'public/global/js/plugins/forms/validation/validate.min.js',
+    'public/global/js/plugins/editors/ckeditor/ckeditor.js',
+    'public/global/js/plugins/editors/summernote/summernote.min.js'
 ], 'public/admin/js/backend.js');

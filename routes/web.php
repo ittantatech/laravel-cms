@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::prefix('administrator')->group(function(){
 
@@ -67,14 +66,26 @@ Route::prefix('administrator')->group(function(){
             'show' => 'admin.posts.show',
             'edit' => 'admin.posts.edit',
         ]]);
-        Route::resource('categories/{type}', 'App\Http\Controllers\Admin\CategoryController', ['names' => [
+        /*Route::resource('categories/{type}/', 'App\Http\Controllers\Admin\CategoryController', ['names' => [
             'store' => 'admin.categories.store',
-            'index' => 'admin.categories.index',
             'create' => 'admin.categories.create',
-            'destroy' => 'admin.categories.destroy',
             'update' => 'admin.categories.update',
-            'show' => 'admin.categories.show',
             'edit' => 'admin.categories.edit',
-        ]]);   
+            'destroy' => 'admin.categories.destroy',
+            'show' => 'admin.categories.show',
+            'index' => 'admin.categories.index',
+            
+        ]]);*/
+        Route::post('categories/{type}',[\App\Http\Controllers\Admin\CategoryController::class,'store'])->name('admin.categories.store');
+        Route::get('categories/{type}',[\App\Http\Controllers\Admin\CategoryController::class,'index'])->name('admin.categories.index');
+        Route::get('categories/{type}/create',[\App\Http\Controllers\Admin\CategoryController::class,'create'])->name('admin.categories.create');
+        Route::delete('categories/{type}/{id}',[\App\Http\Controllers\Admin\CategoryController::class,'destroy'])->name('admin.categories.destroy');
+        Route::patch('categories/{type}/{id}',[\App\Http\Controllers\Admin\CategoryController::class,'update'])->name('admin.categories.update');               
+        Route::get('categories/{type}/{id}/edit',[\App\Http\Controllers\Admin\CategoryController::class,'edit'])->name('admin.categories.edit');   
+        
+        Route::delete('media/{id}',[\App\Http\Controllers\Admin\MediaController::class,'destroy'])->name('admin.media.destroy');
+        Route::post('media/upload',[\App\Http\Controllers\Admin\MediaController::class,'store'])->name('admin.media.store');
     });
 });
+Route::get('/{post_slug}',[App\Http\Controllers\HomeController::class, 'show'])->name('home.show');
+Route::get('/{type?}/{item?}', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

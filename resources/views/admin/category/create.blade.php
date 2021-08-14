@@ -11,19 +11,12 @@
         <input class="form-control" type="text" name="name" required>
     </div>  
     <div class="form-group">
-      <label>{{ __('Category') }}:</label>
-      <select name="categor" class="form-control form-control-select2" data-placeholder="Select Category">
+      <label>{{ __('Parent Category') }}:</label>
+      <select name="categor" class="form-control" data-placeholder="Select Category">
+        <option value="0">Select parent</option>
         @if(!empty($categories))
           @foreach($categories as $category)
-            @if(!empty($category->childs) && count($category->childs->toArray())>0)
-              <optgroup label="{{$category->name}}">
-                @foreach($category->childs as $child)
-                  <option value="{{$child->id}}">{{$child->name}}</option>
-                @endforeach
-              </optgroup>
-            @else
-              <option value="{{$category->id}}">{{$category->name}}</option>
-            @endif
+            <option value="{{$category->id}}">{{$category->name}}</option>
           @endforeach
         @endif
       </select>

@@ -77,6 +77,9 @@
 						@can('add-post')
 						<li class="nav-item"><a href="{{route('admin.categories.index','category')}}" class="nav-link {{classActivePath(['administrator/categories/category'])}}">Category</a></li>
 						@endcan
+						@can('add-post')
+						<li class="nav-item"><a href="{{route('admin.categories.index','tag')}}" class="nav-link {{classActivePath(['administrator/categories/tag'])}}">Tag</a></li>
+						@endcan
 					</ul>
 				</li>
 				@endcan
