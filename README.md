@@ -1,6 +1,6 @@
 # Getting Started
 
-    Laravel App using custom code for - Multiple Authentication and Role Based Access System.
+    Laravel App using custom code for - Cotent Management as well as Multiple Authentication and Role Based Access System.
 
 ## Benefits
     - Custom coding allows you to edit the code as per your requirements
@@ -8,6 +8,9 @@
     - Role based access
     - Admin can create any role based on his role permission
     - Super Admin can manage all users and roles
+    - Super Admin can manage all posts
+    - Sub Admin can manage all posts if super admin can give permission for access posts
+    
 
 
 ## Installation
@@ -47,8 +50,8 @@ Install all the dependencies using composer
 
 **TL;DR command list**
 
-    git clone https://ittanta@bitbucket.org/ittanta/multi-auth.git
-    cd multi-auth
+    git clone https://github.com/ittantatech/laravel-cms.git
+    cd laravel-cms
     composer install
     cp .env.example .env
     php artisan key:generate
