@@ -9,11 +9,13 @@ class HomeController extends Controller
 {
     
     /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * Show the application home page with all posts or tag and category base posts.
+     * @param  \Illuminate\Http\Request  $request
+     * @param Category or Tag $type
+     * @param Category or Tag unique slug $item
+     * @return \Illuminate\Http\Response
      */
-    public function index(Request $request,$type="",$item="",$post="")
+    public function index(Request $request,$type="",$item="")
     {
 
         if($type == 'categories'){
@@ -46,11 +48,20 @@ class HomeController extends Controller
         return view('home',['posts' => $posts,'recentPosts' => $recentPosts,'categories'=>$categories,'tags' => $tags,'is_cat'=>$is_cat,'cat_name'=>$cat_name]);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  post_slug  $post_slug
+     * @return \Illuminate\Http\Response
+     */
     public function show($post_slug){
         $post = Post::where('post_slug',$post_slug)->where('post_status',1)->first();
+        
+        // Check post is empty or not if empty then display 404 page
         if(empty($post)){
             return abort(404);
         }
+
         $nextPost = Post::where('id','>',$post->id)->where('post_status',1)->latest()->first();
         $prevPost = Post::where('id','<',$post->id)->where('post_status',1)->latest()->first();
         return view('post',['post'=>$post,'nextPost' => $nextPost,'prevPost' => $prevPost]);

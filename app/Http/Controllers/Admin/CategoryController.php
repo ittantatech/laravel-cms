@@ -73,7 +73,7 @@ class CategoryController extends Controller
         $category->name = $request->get('name');
         $category->type = $type;
         $category->status = $request->get('status');
-        $category->slug = $this->generateSlug($request->get('name'),$type);
+        $category->slug = generateTagSlug($request->get('name'),$type);
         $category->parent_id = $request->get('category',0);
         $category->save();
         return response()->json(['status'=>1,'message'=>"{$type} added!"]);
@@ -116,7 +116,7 @@ class CategoryController extends Controller
         $category = Category::where(['type'=>$type,'id'=>$id])->first();
         $category->name = $request->get('name');
         $category->status = $request->get('status');
-        $category->slug = $this->generateSlug($request->get('name'),$type,$id);
+        $category->slug = generateTagSlug($request->get('name'),$type,$id);
         $category->parent_id = $request->get('category',0);
         $category->save();
         return response()->json(['status'=>1,'message'=>"{$type} updated!"]);
@@ -132,32 +132,5 @@ class CategoryController extends Controller
     {
         Category::where(['type'=>$type,'id'=>$id])->delete();
         return response()->json(['status'=>1,'message'=>"{$type} deleted!"]);
-    }
-
-    protected function generateSlug($name,$type,$id=0){
-        $slug  = Str::slug($name);
-        $original_slug = $slug;
-        /*
-        if($id>0){
-            $count = Category::whereRaw("slug RLIKE '^{$slug}(-[0-9]+)?$'")->where('id','!=',$id)->count();
-        }else{
-            $count = Category::whereRaw("slug RLIKE '^{$slug}(-[0-9]+)?$'")->count();
-        }
-        // if other slugs exist that are the same, append the count to the slug
-        return $count ? "{$slug}-{$count}" : $slug;*/
-
-
-          $count = 1;
-          if($id > 0){
-            while (Category::whereSlug($slug)->whereNotIn('id',[$id])->where('type',$type)->exists()) {
-                $slug = "{$original_slug}-" . $count++;
-            }
-          }else{
-            while (Category::whereSlug($slug)->where('type',$type)->exists()) {
-                $slug = "{$original_slug}-" . $count++;
-            }
-          }
-          
-          return $slug;
     }
 }

@@ -1,5 +1,9 @@
 <?php 
 use Illuminate\Support\Facades\Request;
+use App\Models\Category;
+use App\Models\Post;
+use Illuminate\Support\Str;
+
 if(!function_exists('classActivePath'))
 {	
 	/**
@@ -72,5 +76,57 @@ if (!function_exists('classMenuOpenPath')) {
             if(strpos(Request::url(),$path) && Request::segment($seg)==$path) return 'nav-item-expanded nav-item-open';
         }
         //return (strpos(Request::url(),$path)) ? 'menu-open' : '';
+    }
+}
+
+/**
+     * generateSlug
+     *
+     * @param  string $name for post title
+     * @param  int $id for existing post generate and check unique slug
+     * @return unique slug
+     */
+if(!function_exists('generateSlug')){
+    function generateSlug($name,$id=0){
+        $slug  = Str::slug($name);
+        $original_slug = $slug;
+        $count = 1;
+        if($id > 0){
+            while (Post::wherePostSlug($slug)->whereNotIn('id',[$id])->exists()) {
+                $slug = "{$original_slug}-" . $count++;
+            }
+        }else{
+            while (Post::wherePostSlug($slug)->exists()) {
+                $slug = "{$original_slug}-" . $count++;
+            }
+        }
+          
+        return $slug;
+    }
+}
+/**
+     * generateTagSlug
+     *
+     * @param  string $name for category or tag title
+     * @param string $type for category or tag
+     * @param  int $id for existing category or tag generate and check unique slug
+     * @return unique slug
+     */
+if(!function_exists('generateTagSlug')){
+    function generateTagSlug($name,$type,$id=0){
+        $slug  = Str::slug($name);
+        $original_slug = $slug;
+        $count = 1;
+        if($id > 0){
+            while (Category::whereSlug($slug)->whereNotIn('id',[$id])->where('type',$type)->exists()) {
+                $slug = "{$original_slug}-" . $count++;
+            }
+        }else{
+            while (Category::whereSlug($slug)->where('type',$type)->exists()) {
+                $slug = "{$original_slug}-" . $count++;
+            }
+        }
+        
+        return $slug;
     }
 }

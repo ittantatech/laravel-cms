@@ -108,7 +108,7 @@ class PostController extends Controller
         $post = new Post();
         $post->post_title = $title;
         $post->post_content = $content;
-        $post->post_slug = $this->generateSlug($title);
+        $post->post_slug = generateSlug($title);
         $post->post_status = 1;
         $post->post_excerpt = $request->get('excerpt');
         $post->admin_id = ($request->has('author')?$request->has('author'):$request->user()->id);
@@ -199,7 +199,7 @@ class PostController extends Controller
 
         $post->post_title = $title;
         $post->post_content = $content;
-        $post->post_slug = $this->generateSlug($title,$post->id);
+        $post->post_slug = generateSlug($title,$post->id);
         $post->post_status = $request->get('status');
         $post->post_excerpt = $request->get('excerpt');
         $post->admin_id = ($request->has('author')?$request->has('author'):$request->user()->id);
@@ -257,62 +257,8 @@ class PostController extends Controller
         $category->name = $tag;
         $category->type = 'tag';
         $category->status = 1;
-        $category->slug = $this->generateSlug($tag,'tag');
+        $category->slug = generateTagSlug($tag,'tag');
         $category->save();
         return $category->id;
-    }
-
-    protected function generateSlug($name,$id=0){
-        $slug  = Str::slug($name);
-        $original_slug = $slug;
-        /*
-        if($id>0){
-            $count = Category::whereRaw("slug RLIKE '^{$slug}(-[0-9]+)?$'")->where('id','!=',$id)->count();
-        }else{
-            $count = Category::whereRaw("slug RLIKE '^{$slug}(-[0-9]+)?$'")->count();
-        }
-        // if other slugs exist that are the same, append the count to the slug
-        return $count ? "{$slug}-{$count}" : $slug;*/
-
-
-          $count = 1;
-          if($id > 0){
-            while (Post::wherePostSlug($slug)->whereNotIn('id',[$id])->exists()) {
-                $slug = "{$original_slug}-" . $count++;
-            }
-          }else{
-            while (Post::wherePostSlug($slug)->exists()) {
-                $slug = "{$original_slug}-" . $count++;
-            }
-          }
-          
-          return $slug;
-    }
-
-    protected function generateTagSlug($name,$type,$id=0){
-        $slug  = Str::slug($name);
-        $original_slug = $slug;
-        /*
-        if($id>0){
-            $count = Category::whereRaw("slug RLIKE '^{$slug}(-[0-9]+)?$'")->where('id','!=',$id)->count();
-        }else{
-            $count = Category::whereRaw("slug RLIKE '^{$slug}(-[0-9]+)?$'")->count();
-        }
-        // if other slugs exist that are the same, append the count to the slug
-        return $count ? "{$slug}-{$count}" : $slug;*/
-
-
-          $count = 1;
-          if($id > 0){
-            while (Category::whereSlug($slug)->whereNotIn('id',[$id])->where('type',$type)->exists()) {
-                $slug = "{$original_slug}-" . $count++;
-            }
-          }else{
-            while (Category::whereSlug($slug)->where('type',$type)->exists()) {
-                $slug = "{$original_slug}-" . $count++;
-            }
-          }
-          
-          return $slug;
     }
 }
