@@ -1,21 +1,21 @@
 # Getting Started
 
-    Laravel App using custom code for - Cotent Management as well as Multiple Authentication and Role Based Access System.
+    Laravel App using custom code for - Content Management as well as Multiple Authentication and Role Based Access System. 
 
 ## Benefits
     - Custom coding allows you to edit the code as per your requirements
-    - There is no Third-Party packages used so app will load fast
+    - There are no Third-Party packages used so app will load fast
     - Role based access
     - Admin can create any role based on his role permission
     - Super Admin can manage all users and roles
     - Super Admin can manage all posts
-    - Sub Admin can manage all posts if super admin can give permission for access posts
+    - Sub Admin can manage all posts and super admin can give permission for accessing posts
     
 
 
 ## Installation
 
-Before you start, please check the official :aravel installation guide for server requirements . [Official Documentation](https://laravel.com/docs/8.x/installation)
+Before you start, please check the official Laravel installation guide for server requirements . [Official Documentation](https://laravel.com/docs/8.x/installation)
 
 Clone the repository
 
@@ -83,4 +83,4 @@ Run the database seeder and you are done
 
 - `.env` - Environment variables can be set in this file
 
-***Note*** : You can quickly set the database information and other variables in this file and have the application fully working.
+***Note***: You can quickly set the database information and other variables in this file and have the application fully working.
